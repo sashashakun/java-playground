@@ -1,0 +1,69 @@
+# Java / Gradle
+build/
+.gradle/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+out/
+target/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+local.properties
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+*.iws
+.idea_modules/
+
+# Eclipse
+.classpath
+.project
+.settings/
+.factorypath
+bin/
+
+# VS Code
+.vscode/
+
+# Node.js / TypeScript (for ts-functional-alt directories)
+node_modules/
+dist/
+*.js.map
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.pnpm-store/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Spring Boot
+spring-shell.log
+*.log
+logs/
+
+# Test coverage
+jacoco.exec
+jacoco/
+
+# Environment
+.env
+.env.local
+.env.*.local
