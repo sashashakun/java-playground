@@ -10,7 +10,7 @@
 | Day | Title | Status | Directory |
 |-----|-------|--------|-----------|
 | 0 | README + Cheatsheets | ✅ | `java-course/` + `cheatsheets/` |
-| 1 | Java Core Language | ⬜ | `day-1-java-core-language/` |
+| 1 | Java Core Language | ✅ | `day-1-java-core-language/` |
 | 2 | Java Advanced Language | ⬜ | `day-2-java-advanced-language/` |
 | 3 | OOP and SOLID | ⬜ | `day-3-oop-and-solid/` |
 | 4 | Spring Boot Core | ⬜ | `day-4-spring-boot-core/` |
@@ -25,3 +25,4 @@ _(Timestamps and notes appended automatically during generation)_
 
 - [2026-03-15] Day 0: Started generation
 - [2026-03-15] Day 0: Completed — 7 files generated (README.md, settings.gradle.kts, 5 cheatsheets)
+- [2026-03-15] Day 1: Completed — DAY-1.md, 7 exercises (src+test), 7 solutions
