@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: payment-service-di
+server:
+  port: 8080
