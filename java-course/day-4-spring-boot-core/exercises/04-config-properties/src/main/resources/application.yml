@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: payment-service-config
+
+payment:
+  max-amount: 50000.00
+  supported-currencies:
+    - USD
+    - EUR
+    - GBP
+    - CHF
+  default-fee-rate: 0.015
+  gateway-url: "https://api.example-gateway.com/v1"

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: payment-service-validation
+server:
+  port: 8080
