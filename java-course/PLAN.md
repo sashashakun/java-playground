@@ -16,7 +16,7 @@
 | 4 | Spring Boot Core | ✅ | `day-4-spring-boot-core/` |
 | 5 | Data Layer | ✅ | `day-5-data-layer/` |
 | 6 | Testing and Quality | ✅ | `day-6-testing-and-quality/` |
-| 7 | Advanced Patterns | ⬜ | `day-7-advanced-patterns/` |
+| 7 | Advanced Patterns | ✅ | `day-7-advanced-patterns/` |
 | 8 | Capstone Project | ⬜ | `day-8-capstone-project/` |
 
 ## Generation Log
@@ -31,3 +31,4 @@ _(Timestamps and notes appended automatically during generation)_
 - [2026-03-16] Day 4: Completed — DAY-4.md, 7 exercises (src+test), 7 solutions
 - [2026-03-16] Day 5: Completed — DAY-5.md, 7 exercises (src+test), 7 solutions
 - [2026-03-16] Day 6: Completed — DAY-6.md, 7 exercises (src+test), 7 solutions
+- [2026-03-16] Day 7: Completed — DAY-7.md, 7 exercises (src+test), 7 solutions
