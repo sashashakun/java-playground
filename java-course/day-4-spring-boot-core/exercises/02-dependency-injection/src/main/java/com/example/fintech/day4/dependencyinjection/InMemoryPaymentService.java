@@ -1,5 +1,7 @@
 package com.example.fintech.day4.dependencyinjection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -35,15 +37,19 @@ import java.util.concurrent.ConcurrentHashMap;
 // TODO 1: Add @Service here
 public class InMemoryPaymentService implements PaymentService {
 
+    private static final Logger log = LoggerFactory.getLogger(InMemoryPaymentService.class);
+
     private final Map<String, Payment> store = new ConcurrentHashMap<>();
 
     @Override
     public Payment create(CreatePaymentRequest request) {
+        log.info("Processing payment: amount={}, currency={}", request.amount(), request.currency());
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     public Optional<Payment> findById(String id) {
+        log.debug("Payment not found: id={}", id);
         throw new UnsupportedOperationException("Not yet implemented");
     }
 

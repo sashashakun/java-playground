@@ -343,6 +343,35 @@ Now `GET /actuator/health` returns:
 
 ---
 
+## SLF4J Logging
+
+Spring Boot auto-configures SLF4J with Logback. The standard pattern:
+
+```java
+private static final Logger log = LoggerFactory.getLogger(MyClass.class);
+
+// In methods:
+log.info("Processing payment: amount={}, currency={}", amount, currency);
+log.debug("Payment not found: id={}", id);
+log.warn("Retrying payment gateway: attempt={}", attempt);
+log.error("Payment failed: id={}, error={}", id, e.getMessage(), e);
+```
+
+Configure log levels in `application.yml`:
+```yaml
+logging:
+  level:
+    com.example.fintech: DEBUG       # your package
+    org.springframework.web: INFO
+    root: WARN
+```
+
+**TypeScript equivalent**: `console.log` / `console.error`, or libraries like `pino` / `winston`.
+The key difference: SLF4J is a logging **facade** — you swap the implementation (Logback, Log4j2)
+without changing application code. There's no direct equivalent in Node.js standard library.
+
+---
+
 ## Checkpoints
 
 After completing all exercises:
