@@ -7,10 +7,16 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * Exercise 04 — @SpringBootTest Integration Tests
@@ -18,19 +24,33 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @SpringBootTest(webEnvironment = RANDOM_PORT) starts a REAL embedded Tomcat server
  * on a random port. TestRestTemplate makes actual HTTP calls to it.
  *
- * This is the closest you can get to production without Docker/real DB.
+ * Now backed by a real PostgreSQL database via Testcontainers — the closest you can
+ * get to production without a dedicated environment.
  *
  * TypeScript analogy: supertest(app) after calling app.listen() — a real HTTP server,
- * not a mocked one. All layers (controller → service → repository → H2) run together.
+ * not a mocked one. All layers (controller → service → repository → PostgreSQL) run together.
  *
- * @DirtiesContext resets the Spring context (and H2 db) between tests to prevent
- * state leakage when using a shared in-memory database.
+ * @DirtiesContext resets the Spring context between tests to prevent state leakage.
+ * With Testcontainers the container is shared across the test class (static field),
+ * but the context and schema are reset per test.
  *
  * Your task: implement all 7 TODO test methods.
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+@Testcontainers
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class AccountIntegrationTest {
+
+    @Container
+    static PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:16");
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url",      postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+    }
 
     @Autowired
     private TestRestTemplate rest;

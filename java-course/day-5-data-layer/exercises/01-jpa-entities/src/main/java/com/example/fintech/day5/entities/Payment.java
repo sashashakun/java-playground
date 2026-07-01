@@ -1,5 +1,11 @@
 package com.example.fintech.day5.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.Instant;
 
 /**
@@ -37,7 +43,9 @@ import java.time.Instant;
  * TODO 8: Annotate `idempotencyKey` with @Column(unique = true)
  *
  * TODO 9: Annotate `createdAt` with @Column(nullable = false, updatable = false)
+ *         (already applied below — @CreatedDate handles population via JPA Auditing)
  */
+@EntityListeners(AuditingEntityListener.class)
 public class Payment {
 
     private String id;
@@ -52,8 +60,12 @@ public class Payment {
 
     private String idempotencyKey;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
+    @LastModifiedDate
+    @Column(nullable = false)
     private Instant updatedAt;
 
     // JPA requires a public or protected no-arg constructor
