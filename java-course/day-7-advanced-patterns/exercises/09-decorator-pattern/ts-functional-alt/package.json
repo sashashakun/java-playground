@@ -1,0 +1,10 @@
+{
+  "name": "decorator-pattern-ts",
+  "version": "1.0.0",
+  "scripts": { "start": "tsx src/solution.ts" },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
+  }
+}

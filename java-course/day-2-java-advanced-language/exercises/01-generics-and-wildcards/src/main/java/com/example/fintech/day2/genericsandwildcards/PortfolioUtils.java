@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class PortfolioUtils {
 
+    private final com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+
     /**
      * TODO 1 — Sum a list of any Number subtype.
      *
@@ -86,6 +88,26 @@ public class PortfolioUtils {
      */
     public <T> void swap(List<T> list, int i, int j) {
         // TODO: implement
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    /**
+     * TODO 5 — Class<T> token pattern: workaround for type erasure.
+     *
+     * Type erasure means generic type params are stripped at runtime.
+     * You cannot write {@code new T()}, {@code instanceof T}, or pass T to Jackson.
+     *
+     * Workaround: accept a Class<T> token so the runtime has the type info.
+     *
+     * Implementation:
+     *   return objectMapper.readValue(json, type);
+     *   (declare ObjectMapper as a field: private final ObjectMapper objectMapper = new ObjectMapper())
+     *
+     * Example:
+     *   record Point(int x, int y) {}
+     *   Point p = deserialize("{\"x\":1,\"y\":2}", Point.class);
+     */
+    public <T> T deserialize(String json, Class<T> type) throws Exception {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 }

@@ -1,5 +1,7 @@
 package com.example.fintech.day4.restcontroller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -48,6 +50,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/api/payments")
 public class PaymentController {
 
+    private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
+
     private final ConcurrentHashMap<String, Payment> store = new ConcurrentHashMap<>();
 
     @GetMapping
@@ -57,11 +61,13 @@ public class PaymentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Payment> getById(@PathVariable String id) {
+        log.debug("Fetching payment: id={}", id);
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @PostMapping
     public ResponseEntity<Payment> create(@RequestBody CreatePaymentRequest request) {
+        log.info("Creating payment: amount={}, currency={}", request.amount(), request.currency());
         throw new UnsupportedOperationException("Not yet implemented");
     }
 

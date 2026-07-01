@@ -78,6 +78,32 @@ Implement `GenericRepository<T>` and `PortfolioUtils` with wildcard methods.
 ### Checkpoint ✅
 `./gradlew test` green. Verify that `sumValues(List<? extends Number>)` accepts both `List<Integer>` and `List<Double>`.
 
+### ⚠️ Type Erasure — The Hidden Cost of Backward Compatibility
+
+Java erases generic type parameters at compile time — `List<String>` and `List<Integer>` both
+become `List` in bytecode. This was a deliberate choice for backward compatibility with pre-generics
+Java libraries, but it has three practical consequences:
+
+| Scenario | Why it fails | Workaround |
+|---|---|---|
+| `new T()` | No type info at runtime | Accept `Class<T> type`, call `type.getDeclaredConstructor().newInstance()` |
+| `instanceof T` | Type stripped, can't check | Use `type.isInstance(obj)` |
+| Overloading `process(List<String>)` + `process(List<Integer>)` | Both erase to `process(List)` — compile error | Use different method names or `Class<T>` tokens |
+
+**The Class<T> token pattern** (TODO 5): Pass the type as an explicit `Class<T>` parameter so
+Jackson (or reflection) has the runtime type info:
+```java
+public <T> T deserialize(String json, Class<T> type) throws Exception {
+    return objectMapper.readValue(json, type);
+}
+```
+
+**TypeScript comparison**: TS generics are also erased (no JVM bytecode, just JS at runtime), but
+because JS has no binary compatibility requirement, there's no pressure to maintain erasure semantics.
+TS uses structural typing — `instanceof` confusion at the class level doesn't arise in the same way.
+The real difference: Java runs on a JVM that must stay backward-compatible; TS transpiles fresh to JS
+on every build.
+
 ---
 
 ## Exercise 02 — Functional Interfaces & Lambdas 🟢

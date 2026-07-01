@@ -101,6 +101,37 @@ JDBC URL: `jdbc:h2:mem:fintechdb`
 
 ---
 
+## Exercise 01 — Flyway: Schema Migration vs DDL Auto
+
+### Flyway: Schema Migration vs DDL Auto
+
+| Approach | How schema is created | Good for |
+|---|---|---|
+| `ddl-auto=create-drop` | Hibernate creates/drops on startup | Local dev + testing only |
+| `ddl-auto=validate` + Flyway | Flyway runs `V1__*.sql` migrations | Staging + Production |
+| `ddl-auto=none` + Flyway | Same, but no validation | When schema is managed externally |
+
+**Rule**: Use Flyway in production. Use `create-drop` for throw-away test databases.
+
+---
+
+## Exercise 05 — Transactions
+
+### Transaction Isolation Levels in Fintech
+
+| Level | Prevents | Risk | When to use |
+|---|---|---|---|
+| `READ_UNCOMMITTED` | Nothing | Dirty reads, phantom reads | Never in fintech |
+| `READ_COMMITTED` | Dirty reads | Non-repeatable reads | Default for most reads |
+| `REPEATABLE_READ` | Dirty + non-repeatable reads | Phantom reads | Balance queries under load |
+| `SERIALIZABLE` | Everything | Performance (full locking) | Concurrent balance updates, idempotency checks |
+
+**Fintech rule**: For concurrent balance deductions (two transfers at the same millisecond),
+use `SERIALIZABLE` or optimistic locking (`@Version`) to prevent double-spend. Never rely
+on `READ_COMMITTED` for balance-altering operations.
+
+---
+
 ## Key JPA Annotations Quick Reference
 
 ```java
