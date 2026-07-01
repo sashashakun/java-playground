@@ -45,3 +45,75 @@ custom validation, dynamic JPA queries, and transactional event delivery.
 | 05 | Custom Validation | `@Constraint`, `ConstraintValidator<A, T>`, `@ValidCurrency`, `@ValidAmount` |
 | 06 | JPA Specifications | `Specification<T>`, `JpaSpecificationExecutor`, `CriteriaBuilder` |
 | 07 | Transactional Events | `@TransactionalEventListener`, outbox pattern, rollback safety |
+| 08 | Builder Pattern | Fluent builder, validation in `build()`, immutable value objects |
+| 09 | Decorator Pattern | Wrapping interfaces, audit/logging cross-cuts |
+| 10 | Strategy Pattern | `@FunctionalInterface` strategy, runtime-swappable algorithms |
+| 11 | Observer Pattern | Typed event bus, `sealed` interfaces, exhaustive dispatch |
+| 12 | Abstract Factory | Factory returning paired validator + processor per channel |
+
+---
+
+## 🔀 Paradigm Comparison — GOF Patterns
+
+### Exercise 08 — Builder
+
+| Java OOP | TypeScript Functional |
+|---|---|
+| `PaymentRequestBuilder` class with fluent setters | `pipe(withAmount(100), withCurrency("USD"), validate)({})` |
+| `build()` validates and throws `IllegalStateException` | `validate` is the last function in the pipe — same semantics |
+| Mutable builder accumulates state | Each step returns a new immutable object (spread) |
+| Type-safe via Java's type system at compile time | Type-safe via TypeScript's structural typing |
+
+**Verdict**: Java's builder is idiomatic for complex object construction. The TS pipe approach achieves the same result with less ceremony — but Java's IDE tooling (autocompletion on the builder) is a genuine advantage.
+
+---
+
+### Exercise 09 — Decorator
+
+| Java OOP | TypeScript Functional |
+|---|---|
+| `AuditingPaymentService implements PaymentService` | `const withAudit = (fn: PaymentFn): PaymentFn => ...` |
+| Decorators form a class hierarchy | Decorators are just HOFs — stack with composition |
+| DI container wires the decorator chain | Manual wrapping: `withAudit(withMetrics(simplePaymentFn))` |
+| `instanceof` checks possible on each layer | No class — decoration is transparent |
+
+**Verdict**: The functional decorator is simpler and more composable. Java's class-based decorator is better when you need DI-managed lifecycle or multiple interface methods to decorate.
+
+---
+
+### Exercise 10 — Strategy
+
+| Java OOP | TypeScript Functional |
+|---|---|
+| `@FunctionalInterface RiskScoringStrategy` | `type RiskStrategy = (amount: number, currency: string) => RiskLevel` |
+| `RiskEngine` holds a `RiskScoringStrategy` field | `riskEngine(strategy)` — strategy is just a closure argument |
+| Strategies as named lambdas or anonymous classes | Strategies as named arrow functions |
+| Runtime injection (Spring `@Qualifier`) | Pass the function directly |
+
+**Verdict**: Strategy is the pattern where Java and TypeScript converge most — both boil down to "pass a function." Java's added ceremony (`@FunctionalInterface`, `@Qualifier`) exists to satisfy the type system and DI container; TS needs neither.
+
+---
+
+### Exercise 11 — Observer
+
+| Java OOP | TypeScript Functional |
+|---|---|
+| `ComplianceListener` functional interface | `type Handler = (event: ComplianceEvent) => void` |
+| `sealed interface ComplianceEvent` + records | Discriminated union: `type ComplianceEvent = TransactionCreated \| TransactionFlagged` |
+| `ComplianceEventBus` class with `List<Listener>` | `createEventBus()` factory returns `{subscribe, publish}` closure |
+| `instanceof` dispatch in listeners | Exhaustive `switch (event.type)` — TypeScript narrows the type |
+
+**Verdict**: TypeScript's discriminated unions give exhaustiveness checking "for free" via the type system. Java's `sealed` interfaces + `instanceof` pattern matching (Java 21+) achieve the same, but with more syntax. The functional TS approach has less boilerplate.
+
+---
+
+### Exercise 12 — Abstract Factory
+
+| Java OOP | TypeScript Functional |
+|---|---|
+| `PaymentChannel` interface + two implementing classes | `type PaymentChannel = { validate: ..., process: ... }` object literal |
+| `PaymentChannelFactory.create(ChannelType)` static method | `createChannel(type: ChannelType): PaymentChannel` factory function |
+| Open/Closed: add channel = add new class | Add channel = add `case` in switch + type to union |
+| Java enforces interface contract at compile time | TS structural typing enforces it at compile time |
+
+**Verdict**: The functional approach has less ceremony and the discriminated union ensures every channel is handled. Java's abstract factory shines when channels need full Spring lifecycle management (stateful beans, injected dependencies).
