@@ -82,6 +82,25 @@ src/test/java/com/example/fintech/capstone/
 
 ---
 
+## Architecture Diagram
+
+```mermaid
+graph LR
+    Client -->|HTTP REST| PaymentController
+    Client -->|HTTP REST| AccountController
+    PaymentController --> PaymentService
+    AccountController --> AccountService
+    PaymentService --> PaymentRepository["PaymentRepository\n(H2 / PostgreSQL)"]
+    PaymentService --> FxService
+    PaymentService -->|publishEvent| DomainEvents["DomainEvents\n(Spring ApplicationEvent)"]
+    FxService -->|"@Cacheable\nfx-rates"| Cache["Cache\n(Simple / Redis)"]
+    DomainEvents --> AuditListener
+    DomainEvents --> NotificationListener
+    AccountService --> AccountRepository["AccountRepository\n(H2 / PostgreSQL)"]
+```
+
+---
+
 ## Exercises
 
 | # | File | TODOs | Concepts |

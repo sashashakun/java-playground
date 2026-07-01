@@ -175,6 +175,10 @@ Implement `MoneyCalculator.java` — 5 methods that perform precise financial ca
 ### Checkpoint ✅
 `./gradlew test` shows `BUILD SUCCESSFUL`. Verify that the precision test passes — `0.1 + 0.2 = 0.3` exactly.
 
+### Break Exercise
+
+Change `HALF_EVEN` to `HALF_UP` in the `MoneyCalculator.convertCurrency` method. The rounding test will fail — `HALF_EVEN` (banker's rounding) rounds 2.5 → 2, while `HALF_UP` rounds 2.5 → 3. Banker's rounding reduces cumulative bias in financial calculations; commercial rounding always rounds .5 up.
+
 ---
 
 ## Exercise 03 — Strings & Text 🟢
@@ -226,6 +230,10 @@ txn-001,2024-01-15T10:30:00Z,15099,USD,PURCHASE,Coffee at Starbucks
 
 ### Checkpoint ✅
 `./gradlew test` passing. Then run the main method to see your parser in action.
+
+### Break Exercise
+
+Change `.equals()` to `==` when comparing `String` values. The equality test will fail for strings created with `new String("x")` — those are not in the string pool and `==` compares references, not content. Interned literals (`"x" == "x"`) still pass, making the bug intermittent and hard to spot.
 
 ---
 
@@ -296,6 +304,10 @@ Implement `TransactionLedger.java` with 7 methods. All tests must pass.
 ### Checkpoint ✅
 All tests pass including the streaming/aggregation tests. The `groupByCurrency` test verifies your Map contains the right groupings.
 
+### Break Exercise
+
+Call `.add()` on a list created with `List.of(...)`. The test (or the call itself) throws `UnsupportedOperationException` at runtime — `List.of()` returns a truly immutable list, unlike `Collections.unmodifiableList()` which is just a read-only view of a mutable list.
+
 ---
 
 ## Exercise 05 — Enums as Classes 🟢
@@ -355,6 +367,10 @@ Implement the TODO methods in `TransactionType.java` and `Currency.java`. Then i
 
 ### Checkpoint ✅
 `./gradlew test` passes. Verify `TransactionType.fromCode("PUR")` returns `PURCHASE` and `Currency.BTC.isCrypto()` returns `true`.
+
+### Break Exercise
+
+Try to add a mutable instance field to an enum constant using an instance initializer block. The compiler rejects it — enum constants can't have per-instance state beyond what's passed to the constructor. This enforces the singleton nature of each constant.
 
 ---
 
@@ -435,6 +451,10 @@ Implement `Money.java` (compact constructor + arithmetic methods), the `PaymentE
 
 ### Checkpoint ✅
 All tests pass. Pay special attention to the `Money` validation tests — negative amounts and null must throw exceptions.
+
+### Break Exercise
+
+Add a `List<String>` field to a record and mutate it from outside: `record.tags().add("extra")`. No exception — records enforce shallow immutability (the reference is `final`), but the object it points to is not. Fix: use `List.copyOf()` in the compact constructor: `this.tags = List.copyOf(tags)`.
 
 ---
 
@@ -536,6 +556,10 @@ public class InsufficientFundsException extends RuntimeException {
 
 ### Checkpoint ✅
 All tests pass. Verify the `InsufficientFundsException` test: the exception carries both the available balance AND the requested amount as fields.
+
+### Break Exercise
+
+Swallow the exception silently: `catch (Exception e) {}`. No test fails — that's the lesson. Silent failure is undetectable; the operation appears to succeed while the underlying problem persists. Always either rethrow (`throw new RuntimeException(e)`), log (`log.error(..., e)`), or convert to a domain exception. Never leave a catch block empty in production code.
 
 ---
 

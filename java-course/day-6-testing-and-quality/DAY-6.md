@@ -61,6 +61,40 @@ By the end of Day 6 you will be able to:
 
 ---
 
+## Exercise 04 — @SpringBootTest with Testcontainers
+
+### Testcontainers Setup
+
+Testcontainers starts a real PostgreSQL container for each test class:
+
+```java
+@Testcontainers
+class AccountIntegrationTest {
+    @Container
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
+
+    @DynamicPropertySource
+    static void props(DynamicPropertyRegistry r) {
+        r.add("spring.datasource.url",      postgres::getJdbcUrl);
+        r.add("spring.datasource.username", postgres::getUsername);
+        r.add("spring.datasource.password", postgres::getPassword);
+    }
+}
+```
+
+**Requires Docker running locally** — tests will fail if Docker is unavailable.
+TypeScript equivalent: `testcontainers` npm package (same API, same concept).
+
+### JaCoCo Coverage Report
+
+After running `./gradlew test`, find the coverage report at:
+```
+build/reports/jacoco/test/html/index.html
+```
+Open in a browser to see line-by-line coverage.
+
+---
+
 ## Quick Reference
 
 ```java
