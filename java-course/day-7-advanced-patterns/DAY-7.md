@@ -31,6 +31,8 @@ custom validation, dynamic JPA queries, and transactional event delivery.
 | `zod` custom `.refine()` validator    | `@Constraint` + `ConstraintValidator<T>`        |
 | Prisma `where: { AND: [...] }`         | `Specification<T>.and(spec)`                    |
 | DB-backed outbox pattern               | `@TransactionalEventListener(AFTER_COMMIT)`     |
+| `passport-jwt` / `express-jwt` middleware | `SecurityFilterChain` + `OncePerRequestFilter` |
+| `swagger-jsdoc` + `swagger-ui-express` | SpringDoc (`@Operation`, auto-generated `/v3/api-docs`) |
 
 ---
 
@@ -50,6 +52,9 @@ custom validation, dynamic JPA queries, and transactional event delivery.
 | 10 | Strategy Pattern | `@FunctionalInterface` strategy, runtime-swappable algorithms |
 | 11 | Observer Pattern | Typed event bus, `sealed` interfaces, exhaustive dispatch |
 | 12 | Abstract Factory | Factory returning paired validator + processor per channel |
+| 13 | Spring Security + JWT | `SecurityFilterChain`, `OncePerRequestFilter`, `@PreAuthorize`, jjwt |
+| 14 | OpenAPI / SpringDoc | `@Operation`, `@Schema`, `@ApiResponse`, `/v3/api-docs`, Swagger UI |
+| 15 | Docker Multi-stage | Multi-stage `Dockerfile`, layer caching, non-root user, compose |
 
 ---
 
